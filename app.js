@@ -24,16 +24,16 @@ let IP = {
         script.src = url
         document.head.appendChild(script);
     },
-    parseIPMoeip: (ip, elID) => {
-        IP.get(`https://ip.mcr.moe/?ip=${ip}&unicode&z=${random}`, 'json')
+    parseIPInfoip: (ip, elID) => {
+        IP.get(`https://ipinfo.io/${ip}?token=7d28bdc28f9dbc`, 'json')
             .then(resp => {
-                $$.getElementById(elID).innerHTML = `${resp.data.country} ${resp.data.area} ${resp.data.provider}`;
+                $$.getElementById(elID).innerHTML = `${resp.data.country} ${resp.data.region} ${resp.data.city}<br> ${resp.data.org}`;
             })
     },
     parseIPIpapi: (ip, elID) => {
         IP.get(`https://ipapi.co/${ip}/json?z=${random}`, 'json')
             .then(resp => {
-                $$.getElementById(elID).innerHTML = `${resp.data.country_name} ${resp.data.city} ${resp.data.org}`;
+                $$.getElementById(elID).innerHTML = `${resp.data.country_name} ${resp.data.city}<br>${resp.data.org}`;
             })
     },
     getWebrtcIP: function() {
@@ -80,7 +80,7 @@ let IP = {
                 console.log('Failed to load resource: pv.sohu.com')
             } else {
                 $$.getElementById('ip-sohu').innerHTML = returnCitySN.cip;
-                IP.parseIPMoeip(returnCitySN.cip, 'ip-sohu-geo');
+                IP.parseIPInfoip(returnCitySN.cip, 'ip-sohu-geo');
             }
         }
         document.head.appendChild(script);
@@ -99,7 +99,7 @@ let IP = {
                 return resp.data.ip;
             })
             .then(ip => {
-                IP.parseIPIpapi(ip, 'ip-ipify-geo');
+                IP.parseIPInfoip(ip, 'ip-ipify-geo');
             })
             .catch(e => {
                 console.log('Failed to load resource: api.ipify.org')
@@ -142,7 +142,7 @@ let HTTP = {
         HTTP.checker('www.baidu.com', 'http-baidu');
         HTTP.checker('s1.music.126.net/style', 'http-163');
         HTTP.checker('www.qq.com', 'http-qq');
-        HTTP.checker('www.sina.com', 'http-sina');
+        HTTP.checker('www.sina.com.cn', 'http-sina');
         HTTP.checker('www.google.com', 'http-google');
         HTTP.checker('www.pinterest.com', 'http-pinterest');
         HTTP.checker('github.com', 'http-github');
