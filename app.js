@@ -58,7 +58,7 @@ let IP = {
             }
         }
     },
-    getIpipnetIP: function() {
+    getspeedtestIP: function() {
         IP.get("https://forge.speedtest.cn/api/location/info?z=" + random, "json").then(function(t) {
             var e = t.data,
             n = [e.country];
@@ -66,9 +66,23 @@ let IP = {
             n.push(e.distinct),
             n.push(e.isp);
             var i = n.filter(Boolean).join(" ");
-            $$.getElementById("ip-ipipnet").innerHTML = "<p>" + e.ip + '</p><p class="sk-text-small">' + i + "</p>"
+            $$.getElementById("ip-speedtest").innerHTML = "<p>" + e.ip + '</p><p class="sk-text-small">' + i + "</p>"
         })
     },
+    getIpipnetIP: () => {
+        IP.get(`https://myip.ipip.net/?z=${random}`, 'text')
+            .then((resp) => {
+                let data = resp.data.replace('当前 IP：', '').split(' 来自于：');
+                $$.getElementById('ip-ipipnet').innerHTML = `<p id="ip-ipipnet">${data[0]}</p><p class="sk-text-small" id="ip-ipipnet-geo">${data[1]}</p>`;
+            });
+    },
+    getIpipnetIPSimple: () => {
+        IP.get(`https://myip.ipip.net/?z=${random}`, 'text')
+        .then((resp) => {
+            let data = resp.data.replace('当前 IP：', '').split(' 来自于：');
+            $$.getElementById('ip-ipipnet').innerHTML = `${data[0]} ${data[1]}`;
+        });
+    },    
     getSohuIP: () => {
         var script = document.createElement('script');
         script.src = 'https://pv.sohu.com/cityjson?ie=utf-8'
