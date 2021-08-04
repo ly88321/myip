@@ -58,12 +58,16 @@ let IP = {
             }
         }
     },
-    getIpipnetIP: () => {
-        IP.get(`https://myip.ipip.net/?z=${random}`, 'text')
-            .then((resp) => {
-                let data = resp.data.replace('当前 IP：', '').split(' 来自于：');
-                $$.getElementById('ip-ipipnet').innerHTML = `<p id="ip-ipipnet">${data[0]}</p><p class="sk-text-small" id="ip-ipipnet-geo">${data[1]}</p>`;
-            });
+    getIpipnetIP: function() {
+        IP.get("https://forge.speedtest.cn/api/location/info?z=" + random, "json").then(function(t) {
+            var e = t.data,
+            n = [e.country];
+            e.province === e.city ? n.push(e.province) : (n.push(e.province), n.push(e.city)),
+            n.push(e.distinct),
+            n.push(e.isp);
+            var i = n.filter(Boolean).join(" ");
+            $$.getElementById("ip-ipipnet").innerHTML = "<p>" + e.ip + '</p><p class="sk-text-small">' + i + "</p>"
+        })
     },
     getIpipnetIPSimple: () => {
         IP.get(`https://myip.ipip.net/?z=${random}`, 'text')
